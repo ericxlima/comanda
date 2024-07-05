@@ -7,32 +7,37 @@ import { scanOutline, stopCircleOutline } from 'ionicons/icons'
 const Home: React.FC = () => {
 
   const [err, setErr] = useState<string>()
-  const [hideBg, setHideBg] = useState("")
+  const [hideBg, setHideBg] = useState(false)
+  
+  const [present] = useIonAlert()
 
   const startScan = async () => {
     await BarcodeScanner.checkPermission({ force: true });
     BarcodeScanner.hideBackground();
-    setHideBg("hideBg")
-  
+    setHideBg(true)
+    
     const result = await BarcodeScanner.startScan();
-    stopScan()
-
+    
     if (result.hasContent) {
-      console.log(result.content);
+      stopScan()
       present({
-        message: result.content!,
-        buttons: ['Ir'],
+        message: result.content,
+        buttons: [
+          "Cancel",
+          { text: "Ok", handler: (d) => console.log("ok pressed") },
+        ],
+        onDidDismiss: (e) => console.log("did dismiss"),
       })
+      console.log(result.content)
     }
   };
 
   const stopScan = () => {
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
-    setHideBg("")
+    setHideBg(false)
   };
 
-  const [present] = useIonAlert()
 
   useEffect(() => {
     const checkPermission = async () => {
@@ -83,11 +88,21 @@ const Home: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className={hideBg}>
-        <IonButton className='start-scan-button' hidden={!!hideBg} onClick={startScan}>
-          <IonIcon icon={scanOutline} slot='start' /> Start Scam
-        </IonButton>
-        <div hidden={!hideBg} className='scan-box' />
+      <IonContent className={hideBg ? "hideBg" : "ion-padding"}>
+        {err && (
+          <IonRow>
+            {" "}
+            <IonText color="danger">{err}</IonText>
+          </IonRow>
+        )}
+
+        {!!!err && hideBg && <div className="scan-box"></div>}
+        {!!!err && !!!hideBg && (
+          <IonButton className="center-button" onClick={startScan}>
+            <IonIcon icon={scanOutline} slot="start" />
+            Start Scan
+          </IonButton>
+        )}
       </IonContent>
     </IonPage>
   );
