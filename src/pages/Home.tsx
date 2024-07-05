@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonAlert } from '@ionic/react';
 import './Home.css';
 import { useEffect, useState } from 'react';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
@@ -19,6 +19,10 @@ const Home: React.FC = () => {
 
     if (result.hasContent) {
       console.log(result.content);
+      present({
+        message: result.content!,
+        buttons: ['Ir'],
+      })
     }
   };
 
@@ -27,6 +31,8 @@ const Home: React.FC = () => {
     BarcodeScanner.stopScan();
     setHideBg("")
   };
+
+  const [present] = useIonAlert()
 
   useEffect(() => {
     const checkPermission = async () => {
