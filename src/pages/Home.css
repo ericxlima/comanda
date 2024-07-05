@@ -1,0 +1,3 @@
+.hideBg::part(background) {
+    display: none;
+}
