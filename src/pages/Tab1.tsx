@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { CameraComponent } from '../components/CameraComponent';
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
@@ -16,7 +16,7 @@ const Tab1: React.FC = () => {
             <IonTitle size="large">Comanda</IonTitle>
           </IonToolbar>
         </IonHeader>
-        
+        <CameraComponent />
       </IonContent>
     </IonPage>
   );
