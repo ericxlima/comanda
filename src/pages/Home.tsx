@@ -1,8 +1,8 @@
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonAlert } from '@ionic/react';
 import './Home.css';
 import { useEffect, useState } from 'react';
+import { options, scanOutline, stopCircleOutline } from 'ionicons/icons'
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { scanOutline, stopCircleOutline } from 'ionicons/icons'
 
 const Home: React.FC = () => {
 
@@ -11,9 +11,17 @@ const Home: React.FC = () => {
   
   const [present] = useIonAlert()
 
+  const prepare = () => {
+    BarcodeScanner.prepare({cameraDirection:'back'});
+  };
+  
+
   const startScan = async () => {
+    prepare()
     await BarcodeScanner.checkPermission({ force: true });
     BarcodeScanner.hideBackground();
+    BarcodeScanner.checkPermission
+    
     setHideBg(true)
     
     const result = await BarcodeScanner.startScan();
